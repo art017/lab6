@@ -10,7 +10,9 @@ $(document).ready(function() {
  */
 function initializePage() {
 	$('.project a').click(addProjectDetails);
+	
 
+	console.log(URL);
 	// $('#colorBtn').click(randomizeColors);
 }
 
@@ -25,6 +27,19 @@ function addProjectDetails(e) {
 	var projectID = $(this).closest('.project').attr('id');
 	// get rid of 'project' from the front of the id 'project3'
 	var idNumber = projectID.substr('project'.length);
-
+	var URL = "localhost:3000/project/" + idNumber;	
 	console.log("User clicked on project " + idNumber);
+	console.log(URL);
+	//$.get("http://"+ URL, callBackFn);
+	$.get("/project/"+idNumber, callBackFn);
+}
+
+function callBackFn(result){
+	console.log(result);
+	var projectHTML = '<p class="project">' +
+		'<h4 class="details">' + result['date'] + '</h4>' +
+		'<h4 class="details">' + result['title'] + '</h4>' +
+		'<img src="' + result['image'] + '" class="detailsImage">' +
+		'<p>' + result['summary'] +'</p></p>';
+	$(".project#project" + result['id'] + " .thumbnail .details").html(projectHTML);
 }
